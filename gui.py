@@ -1,9 +1,9 @@
 from device import Camera
 from detect import Zucchini
 
-from PyQt5.QtWidgets import QApplication, QMainWindow, QWidget, QPushButton, QLabel, QFrame, QFileDialog
-from PyQt5.QtCore import QSize, QRect, Qt, QThread, QTimer
-from PyQt5.QtGui import QPixmap, QImage, QIcon
+from PyQt5.QtWidgets import * #QApplication, QMainWindow, QWidget, QPushButton, QLabel, QFrame, QFileDialog,QScrollArea
+from PyQt5.QtCore import * #QSize, QRect, Qt, QThread, QTimer
+from PyQt5.QtGui import * #QPixmap, QImage, QIcon
 
 import sys
 
@@ -85,6 +85,11 @@ class StartWindow(QMainWindow):
         self.btn_record.setGeometry(QRect(560, 630, 100, 30))
         self.btn_record.clicked.connect(self.record)
 
+        #result
+        self.label_result = QLabel(self.centralWidget)
+        self.label_result.setGeometry(QRect(140, 630, 200, 30))
+        self.label_result.setFont(QFont('Arial', 13)) 
+
     def select_file(self, ext):
         fname = QFileDialog.getOpenFileName(self, 'Open file', './', '*.'+ext)
         if fname[0]:
@@ -99,15 +104,13 @@ class StartWindow(QMainWindow):
                 self.path_c.setText(self.cfg)
 
     def start_detect(self):
-        print("detection started")
-        self.zuc.initialize(WEIGHTS=self.weights, CFG=self.cfg, H5=self.h5)
+        self.check = self.zuc.initialize(WEIGHTS=self.weights, CFG=self.cfg, H5=self.h5)
         self.timer.timeout.connect(self._detect)
 
     def _detect(self):
-        pass
-        # t1 = threading.Thread(target=self.zuc.detect_zucchini, args=(self.frame, ), daemon=True)
-        # t1.start()
-
+        if self.check:
+            result = self.zuc.detect_zucchini(self.frame)
+            self.label_result.setText("result: "+result)
 
     def record(self):
         self.camera.rec = False if self.camera.rec else True
