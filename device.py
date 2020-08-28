@@ -21,6 +21,11 @@ class Camera:
         self.cap = cv2.VideoCapture(self.cam_num)
         print("started")
 
+    def get_wh(self):
+        w = int(self.cap.get(cv2.CAP_PROP_FRAME_WIDTH))
+        h = int(self.cap.get(cv2.CAP_PROP_FRAME_HEIGHT))
+        return (w,h)
+
     def get_frame(self):
         self.ret, self.frame = self.cap.read()
         if self.ret:

@@ -1,6 +1,5 @@
 from device import Camera
-from detect import Zucchini
-from coordinate import Yolo
+from detect import Result
 
 from PyQt5.QtWidgets import * #QApplication, QMainWindow, QWidget, QPushButton, QLabel, QFrame, QFileDialog,QScrollArea
 from PyQt5.QtCore import * #QSize, QRect, Qt, QThread, QTimer
@@ -20,14 +19,14 @@ class StartWindow(QMainWindow):
             self.set_timer()
             self.camera.initialize()
             self.timer.start(1)
+            # zuc detection
+            w,h = self.camera.get_wh()
+            self.result = Result(w,h)
 
         # file path
         self.weights = ""
         self.cfg = ""
         self.h5 = ""
-
-        # zuc detection
-        self.zuc = Zucchini()
 
     def init_gui(self):
         # main window settings
@@ -105,13 +104,21 @@ class StartWindow(QMainWindow):
                 self.path_c.setText(self.cfg)
 
     def start_detect(self):
-        self.check = self.zuc.initialize(WEIGHTS=self.weights, CFG=self.cfg, H5=self.h5)
-        self.timer.timeout.connect(self._detect)
+        check = self.result.initialize(WEIGHTS=self.weights, CFG=self.cfg, H5=self.h5)
+        if check == 1:
+            self.timer.timeout.connect(self._class)
+        if check == 2:
+            # self._xy()
+            pass
 
-    def _detect(self):
-        if self.check:
-            result = self.zuc.detect_zucchini(self.frame)
-            self.label_result.setText("result: "+result)
+    def _class(self):
+        classname = self.result.get_class(self.frame)
+        self.label_result.setText("result: "+classname)
+
+    def _xy(self):
+        pass
+        # thr = threading.Thread(target = self.result.get_xy, args = (self.frame, ),daemon= True)
+        # thr.start()
 
     def record(self):
         self.camera.rec = False if self.camera.rec else True
