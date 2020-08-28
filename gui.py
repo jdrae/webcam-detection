@@ -117,7 +117,7 @@ class StartWindow(QMainWindow):
         print("recording...") if self.camera.rec else print("record stop")
         text = "stop" if self.camera.rec else "record"
         self.btn_record.setText(text)
-        '''
+        
         if self.camera.rec:
             self.camera.setOut()
             self.timer.timeout.connect(self._record)
@@ -126,17 +126,15 @@ class StartWindow(QMainWindow):
             if self.camera.out is not None:
                 self.camera.out.release()
                 self.camera.out = None
-
+        '''
         [mpeg4 @ 000001c87838ac80] Invalid pts (4) <= last (4)
         
         https://github.com/PyAV-Org/PyAV/issues/202
         '''
 
     def _record(self):
-        print(".",end="")
         if self.camera.rec:
-            t1 = threading.Thread(target=self.camera.record, args=(self.frame, ), daemon=True)
-            t1.start()
+            self.camera.record()
 
     def set_timer(self):
         # timer to update frame

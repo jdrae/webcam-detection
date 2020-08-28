@@ -41,11 +41,12 @@ class Camera:
         if self.out is None:
             self.out = cv2.VideoWriter("record\\video-"+time.strftime("%Y%m%d-%H%M%S")+".avi", self.fourcc, 25.0, (640,480))
 
-    def record(self, frame):
+    def record(self):
         if self.cap is None:
             print("camera is not opened")
             return
         if self.out is not None:
+            frame = cv2.cvtColor(self.frame, cv2.COLOR_BGR2RGB)
             self.out.write(frame)
 
     def capture(self):
@@ -56,7 +57,8 @@ class Camera:
             print("captured")
             if not os.path.exists("capture\\"):
                 os.makedirs("capture\\")
-            cv2.imwrite("capture\\photo-"+time.strftime("%Y%m%d-%H%M%S")+".jpg", self.frame)
+            frame = cv2.cvtColor(self.frame, cv2.COLOR_BGR2RGB)
+            cv2.imwrite("capture\\photo-"+time.strftime("%Y%m%d-%H%M%S")+".jpg", frame)
 
 
     def __str__(self):
@@ -75,7 +77,7 @@ if __name__ == '__main__':
 
             if cam.rec:
                 cam.setOut()
-                t1 = threading.Thread(target=cam.record, args=(frame,), daemon=True)
+                t1 = threading.Thread(target=cam.record, daemon=True)
                 t1.start()
             else:
                 if cam.out is not None:
