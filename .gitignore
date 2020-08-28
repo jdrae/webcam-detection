@@ -5,3 +5,5 @@ capture/
 record/
 
 yolov3.weights
+zuc/
+test/

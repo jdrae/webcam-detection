@@ -53,6 +53,7 @@ class Camera:
             print("camera is not opened")
             return
         if self.ret:
+            print("captured")
             if not os.path.exists("capture\\"):
                 os.makedirs("capture\\")
             cv2.imwrite("capture\\photo-"+time.strftime("%Y%m%d-%H%M%S")+".jpg", self.frame)

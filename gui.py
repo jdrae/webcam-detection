@@ -104,8 +104,9 @@ class StartWindow(QMainWindow):
         self.timer.timeout.connect(self._detect)
 
     def _detect(self):
-        t1 = threading.Thread(target=self.zuc.detect_zucchini, args=(self.frame, ), daemon=True)
-        t1.start()
+        pass
+        # t1 = threading.Thread(target=self.zuc.detect_zucchini, args=(self.frame, ), daemon=True)
+        # t1.start()
 
 
     def record(self):
@@ -123,7 +124,6 @@ class StartWindow(QMainWindow):
                 self.camera.out.release()
                 self.camera.out = None
 
-        
         [mpeg4 @ 000001c87838ac80] Invalid pts (4) <= last (4)
         
         https://github.com/PyAV-Org/PyAV/issues/202
