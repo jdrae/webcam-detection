@@ -1,5 +1,6 @@
 from device import Camera
 from detect import Zucchini
+from coordinate import Yolo
 
 from PyQt5.QtWidgets import * #QApplication, QMainWindow, QWidget, QPushButton, QLabel, QFrame, QFileDialog,QScrollArea
 from PyQt5.QtCore import * #QSize, QRect, Qt, QThread, QTimer

@@ -45,15 +45,12 @@ class Zucchini():
 
 if __name__ == '__main__':
     vs = cv2.VideoCapture("zuc/zuc.avi")
-    # vs = cv2.VideoCapture(0)
     if not vs.isOpened:
         print('Cannot load video')
         exit(0)
     
     
     zuc = Zucchini()
-    # zuc.initialize(WEIGHTS="zuc/zuc.weights",CFG="zuc/zuc.cfg")
-    # zuc.initialize(WEIGHTS="model_data/yolov3.weights",CFG="model_data/yolov3.cfg")
     zuc.initialize(H5 = "zuc/zuc.h5")
     while True:
         ret, frame = vs.read()
