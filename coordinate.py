@@ -78,7 +78,6 @@ class Yolo():
         label, x, y, w, h = self.get_xy()
         cv2.rectangle(frame, (x, y), (x + w, y + h), self.color, 2)
         cv2.putText(frame, label, (x, y - 10), self.font, 1, self.color, 2)
-        cv2.imshow('', self.frame)
         return frame
         
 

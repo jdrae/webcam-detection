@@ -134,7 +134,6 @@ class StartWindow(QMainWindow):
         res = self.result.get_res(self.frame)
         self.label_result.setText(res)
 
-
     def record(self):
         self.camera.rec = False if self.camera.rec else True
         print("recording...") if self.camera.rec else print("record stop")
@@ -169,6 +168,8 @@ class StartWindow(QMainWindow):
         if ret:
             if self.coor:
                 self.result.yolo.update_frame(self.frame)
+                if self.result.yolo.found:
+                    self.frame = self.result.yolo.print_rec(self.frame)
             try:
                 QImg = QImage(self.frame.data, self.frame.shape[1], self.frame.shape[0], QImage.Format_RGB888)
                 pixMap = QPixmap.fromImage(QImg)
