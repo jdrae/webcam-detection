@@ -4,6 +4,6 @@ __pycache__/
 capture/
 record/
 
-yolov3.weights
+model_data/
 zuc/
 test/
