@@ -30,10 +30,35 @@ class Result():
         if self.weights != "" and self.cfg != "":
             self.yolo.initialize(self.width, self.height, self.weights, self.cfg)
             ret = 2
+
+        if self.h5 !="" and self.weights != "" and self.cfg != "":
+            ret = 3
+        
         return ret
 
     def get_class(self, frame):
         return self.zuc.detect_zucchini(frame)
 
-    def get_xy(self, frame):
-        self.yolo.find_xy(frame)
+    def get_xy(self):
+        if self.yolo.found:
+            label, x, y, w, h = self.yolo.get_xy()
+            tmp = "애호박 "+label+", 좌표:("+str(x)+", "+str(y)+")"
+            return tmp
+        else:
+            return "Not Found"
+
+    def get_res(self,frame):
+        if self.yolo.found:
+            label, x, y, w, h = self.yolo.get_xy()
+            img = self.zuc.crop(frame, x,y,w,h)
+            classname= self.zuc.detect_zucchini(img)
+            tmp = classname+" "+label+", 좌표:("+str(x)+", "+str(y)+")"
+            return tmp
+        else:
+            return "Not Found"
+            
+        
+
+if __name__ == '__main__':
+    result = Result(w,h)
+

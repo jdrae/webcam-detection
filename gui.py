@@ -28,6 +28,8 @@ class StartWindow(QMainWindow):
         self.cfg = ""
         self.h5 = ""
 
+        self.coor = False
+
     def init_gui(self):
         # main window settings
         window_width = 680
@@ -87,8 +89,9 @@ class StartWindow(QMainWindow):
 
         #result
         self.label_result = QLabel(self.centralWidget)
-        self.label_result.setGeometry(QRect(140, 630, 200, 30))
-        self.label_result.setFont(QFont('Arial', 13)) 
+        self.label_result.setGeometry(QRect(140, 630, 250, 30))
+        self.label_result.setFont(QFont('Arial', 13))
+        self.label_result.setText("Not Started")
 
     def select_file(self, ext):
         fname = QFileDialog.getOpenFileName(self, 'Open file', './', '*.'+ext)
@@ -108,17 +111,29 @@ class StartWindow(QMainWindow):
         if check == 1:
             self.timer.timeout.connect(self._class)
         if check == 2:
-            # self._xy()
-            pass
+            self.coor = True
+            thr = threading.Thread(target = self.result.yolo.find_xy, daemon= True)
+            thr.start()
+            self.timer.timeout.connect(self._xy)
+        if check == 3:
+            self.coor = True
+            thr = threading.Thread(target = self.result.yolo.find_xy, daemon= True)
+            thr.start()
+            self.timer.timeout.connect(self._res)
+
 
     def _class(self):
         classname = self.result.get_class(self.frame)
-        self.label_result.setText("result: "+classname)
+        self.label_result.setText(classname)
 
     def _xy(self):
-        pass
-        # thr = threading.Thread(target = self.result.get_xy, args = (self.frame, ),daemon= True)
-        # thr.start()
+        xy = self.result.get_xy()
+        self.label_result.setText(xy)
+
+    def _res(self):
+        res = self.result.get_res(self.frame)
+        self.label_result.setText(res)
+
 
     def record(self):
         self.camera.rec = False if self.camera.rec else True
@@ -152,6 +167,8 @@ class StartWindow(QMainWindow):
     def update_frame(self):
         ret, self.frame = self.camera.get_frame()
         if ret:
+            if self.coor:
+                self.result.yolo.update_frame(self.frame)
             try:
                 QImg = QImage(self.frame.data, self.frame.shape[1], self.frame.shape[0], QImage.Format_RGB888)
                 pixMap = QPixmap.fromImage(QImg)

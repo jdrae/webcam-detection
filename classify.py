@@ -24,6 +24,22 @@ class Zucchini():
         img = cv2.resize(frame, (width, height))
         return img
 
+    def crop(self, frame, x,y,w,h):
+        err = 20 #오차범위 20
+        if x < err: # 음수 입력
+            x = err
+        if y < err:
+            y = err
+        img = frame[x-err:x+w+err, y-err:y+h+err] 
+
+        #padding
+        size = max(w+2*err, h+2*err)
+        xsize = int((size - x) / 2)
+        ysize = int((size-y) /2)
+        COLOR = [255, 255, 255]
+        fin = cv2.copyMakeBorder(img, xsize, xsize, ysize, ysize, cv2.BORDER_CONSTANT, value = COLOR)
+        return fin
+
     def detect_zucchini(self, frame):
         res_img = self.resize(frame)
         img_array = np.array(res_img)
@@ -38,7 +54,6 @@ if __name__ == '__main__':
     if not vs.isOpened:
         print('Cannot load video')
         exit(0)
-    
     
     zuc = Zucchini()
     zuc.initialize(H5 = "zuc/zuc.h5")
