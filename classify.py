@@ -34,8 +34,12 @@ class Zucchini():
 
         #padding
         size = max(w+2*err, h+2*err)
-        xsize = int((size - x) / 2)
-        ysize = int((size-y) /2)
+        xsize = int((size - w) / 2)
+        ysize = int((size-h) /2)
+        if xsize < 0: # 음수 입력
+            xsize = 0
+        if ysize < 0:
+            ysize = 0
         COLOR = [255, 255, 255]
         fin = cv2.copyMakeBorder(img, xsize, xsize, ysize, ysize, cv2.BORDER_CONSTANT, value = COLOR)
         return fin
@@ -50,7 +54,7 @@ class Zucchini():
 
 
 if __name__ == '__main__':
-    vs = cv2.VideoCapture("zuc/zuc.avi")
+    vs = cv2.VideoCapture("zuc/zuc3.avi")
     if not vs.isOpened:
         print('Cannot load video')
         exit(0)

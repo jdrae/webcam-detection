@@ -8,7 +8,7 @@ class Yolo():
         self.frame = None
         self.className = "zucchini"
         self.color = (100, 0, 100)
-        self.min_confidence = 0.5
+        self.min_confidence = 0.6
         self.font = cv2.FONT_HERSHEY_PLAIN
         self.found = False
 
@@ -112,6 +112,7 @@ if __name__ == '__main__':
             if tmp != x:
                 print(label, x, y, w, h)
                 tmp = x
+            frame = yolo.print_rec(frame)
         cv2.imshow('', frame)
         if cv2.waitKey(1) & 0xFF == ord('q'):
             print(threading.active_count())
