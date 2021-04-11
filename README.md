@@ -1,4 +1,8 @@
 <p>실시간으로 웹캠에 주어지는 이미지를 받고, 물체를 감지하여 클래스 별로 분류하는 GUI 프로그램을 만든다.</p>
+
+![ezgif-7-ab943cbc7034](https://user-images.githubusercontent.com/68010286/114313380-37fd9300-9b31-11eb-9d13-eff89023b16a.gif)
+
+
 <h2 id="gui-디자인">GUI 디자인</h2>
 <p><img src="https://user-images.githubusercontent.com/45510328/90504178-a4371b00-e18b-11ea-908a-af5b9ce8c77e.png" alt="0818-gui"></p>
 <ul>
